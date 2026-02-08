@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confirmação de Presença</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f5f5f5;
+      --card:#ffffff;
+      --green:#2f5f52;
+      --line:#dedad3;
+      --text:#2c2c2c;
+      --muted:#777;
+      --shadow: 0 12px 32px rgba(0,0,0,.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body{
+      margin:0;
+      background:var(--bg);
+      font-family:'Inter', sans-serif;
+      color:var(--text);
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      /* ✅ evita “cortar” sombra e evita vazar */
+      padding: 18px;
+      overflow-x: hidden;
+    }
+
+    /* ✅ garante que NUNCA passe da tela */
+    .wrap{
+      width: 100%;
+      max-width: 560px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .card{
+      width: 100%;
+      max-width: 520px;
+
+      background:var(--card);
+      border-radius:18px;
+      padding: 28px 22px;
+      box-shadow: var(--shadow);
+
+      /* ✅ impede qualquer elemento interno de “vazar” visualmente */
+      overflow: hidden;
+    }
+
+    h1{
+      font-family:'Playfair Display', serif;
+      text-align:center;
+      font-size:28px;
+      color:var(--green);
+      margin:0 0 6px;
+    }
+
+    .subtitle{
+      text-align:center;
+      font-size:12px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin:0 0 18px;
+    }
+
+    label.top{
+      display:block;
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin:16px 0 6px;
+    }
+
+    input[type="text"]{
+      width:100%;
+      padding:14px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      font-size:14px;
+      outline:none;
+      background:#fff;
+    }
+
+    input[type="text"]:focus{
+      border-color: var(--green);
+    }
+
+    .options{
+      display:flex;
+      gap:12px;
+      margin-top:8px;
+      width: 100%;
+    }
+
+    .choice{
+      flex:1;
+      min-width: 0; /* ✅ evita overflow em alguns browsers */
+    }
+
+    .choice input{ display:none; }
+
+    .choice span{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding:12px 12px;
+      border-radius:30px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      user-select:none;
+      font-size:14px;
+      transition:.15s;
+      white-space: nowrap;
+    }
+
+    .choice input:checked + span{
+      border-color: var(--green);
+      background:#eef4f2;
+      color: var(--green);
+      font-weight:600;
+    }
+
+    .buttons{
+      display:flex;
+      gap:12px;
+      margin-top:22px;
+      width: 100%;
+    }
+
+    button{
+      flex:1;
+      min-width: 0; /* ✅ evita overflow */
+      padding:14px;
+      border-radius:30px;
+      font-size:14px;
+      cursor:pointer;
+      border:none;
+    }
+
+    .btn-secondary{
+      background:#fff;
+      border:1px solid var(--line);
+      font-weight:600;
+      color:var(--text);
+    }
+
+    .btn-primary{
+      background:var(--green);
+      color:#fff;
+      font-weight:600;
+    }
+
+    .btn-primary:disabled{
+      opacity:.7;
+      cursor:not-allowed;
+    }
+
+    #status{
+      margin-top:14px;
+      text-align:center;
+      min-height:18px;
+      font-size:14px;
+    }
+
+    .ok{ color: var(--green); font-weight:600; }
+    .err{ color: #c0392b; font-weight:600; }
+
+    /* ✅ mobile muito pequeno: empilha botões se necessário */
+    @media (max-width: 360px){
+      .options, .buttons { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Confirmação de Presença</h1>
+      <div class="subtitle">CONFIRME INDIVIDUALMENTE</div>
+
+      <form id="formPresenca">
+        <label class="top">NOME COMPLETO</label>
+        <input type="text" id="nome" placeholder="Digite seu nome" required />
+
+        <label class="top">VAI COMPARECER?</label>
+        <div class="options">
+          <label class="choice">
+            <input type="radio" name="presenca" value="Sim" required>
+            <span>Sim</span>
+          </label>
+
+          <label class="choice">
+            <input type="radio" name="presenca" value="Não">
+            <span>Não</span>
+          </label>
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">
+            Voltar
+          </button>
+          <button type="submit" class="btn-primary" id="btnEnviar">
+            Enviar
+          </button>
+        </div>
+
+        <div id="status"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const ENDPOINT = "https://script.google.com/macros/s/AKfycbzqxu1a-bHA6l5HKouGWYIGZwGIOR7GvMDs6qWaQEHuAfGOV-aXbkV2VDY-R8Xneboefg/exec";
+
+    const form = document.getElementById("formPresenca");
+    const statusEl = document.getElementById("status");
+    const btn = document.getElementById("btnEnviar");
+    const nomeEl = document.getElementById("nome");
+
+    function jsonp(params) {
+      return new Promise((resolve, reject) => {
+        const cb = "cb_" + Math.random().toString(36).slice(2);
+        const qs = new URLSearchParams({ ...params, callback: cb });
+
+        const s = document.createElement("script");
+        s.src = ENDPOINT + "?" + qs.toString();
+
+        window[cb] = (data) => {
+          delete window[cb];
+          s.remove();
+          resolve(data);
+        };
+
+        s.onerror = () => {
+          delete window[cb];
+          s.remove();
+          reject(new Error("jsonp_error"));
+        };
+
+        document.body.appendChild(s);
+      });
+    }
+
+    nomeEl.addEventListener("blur", async () => {
+      const nome = nomeEl.value.trim();
+      if (!nome) return;
+
+      try {
+        const r = await jsonp({ action: "check", nome });
+        if (r.ok && r.exists) {
+          statusEl.innerHTML = "<span class='err'>Este nome já confirmou presença.</span>";
+        } else {
+          statusEl.textContent = "";
+        }
+      } catch {}
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const nome = nomeEl.value.trim();
+      const presencaEl = document.querySelector("input[name='presenca']:checked");
+      const presenca = presencaEl ? presencaEl.value : "";
+
+      if (!nome || !presenca) {
+        statusEl.innerHTML = "<span class='err'>Preencha nome e presença.</span>";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Enviando...";
+      statusEl.textContent = "";
+
+      try {
+        const r = await jsonp({ action: "submit", nome, presenca });
+
+        if (r.ok && r.status === "ok") {
+          statusEl.innerHTML = "<span class='ok'>Confirmação registrada ✅</span>";
+          form.reset();
+        } else if (r.ok && r.status === "duplicado") {
+          statusEl.innerHTML = "<span class='err'>Você já confirmou antes ✅</span>";
+        } else {
+          statusEl.innerHTML = "<span class='err'>Erro ao enviar. Tente novamente.</span>";
+        }
+      } catch {
+        statusEl.innerHTML = "<span class='err'>Erro de conexão. Tente novamente.</span>";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Enviar";
+      }
+    });
+  </script>
+</body>
+</html>

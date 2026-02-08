@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Larissa & Gabriel | Casamento</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --border: #e9e5df;
+      --shadow: 0 10px 28px rgba(0,0,0,.06);
+
+      --name: #b4c4cc;
+      --and: #beae92;
+
+      --green: #2f5f52;
+      --text: #333;
+      --muted: #777;
+      --gold: #c9b28c;
+    }
+
+    *{ box-sizing: border-box; }
+
+    body{
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      /* MENOR ainda pra caber no WhatsApp */
+      padding: 8px;
+    }
+
+    .container{
+      width: 100%;
+      max-width: 420px;
+
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+
+      /* MAIS COMPACTO */
+      padding: 14px 14px;
+      text-align: center;
+    }
+
+    .intro{
+      margin: 0 auto 8px;
+      max-width: 310px;
+      font-size: 11px;
+      line-height: 1.45;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+    }
+
+    .names{
+      margin: 2px 0 8px;
+      font-family: 'Pinyon Script', cursive;
+      font-weight: 400;
+      line-height: 1.02;
+
+      /* menor */
+      font-size: 40px;
+    }
+    .names .top,
+    .names .bottom{ color: var(--name); display:block; }
+    .names .and{
+      color: var(--and);
+      display:block;
+      font-size: 18px;
+      margin: 1px 0;
+    }
+
+    .date{
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 7px;
+      margin: 6px 0 4px;
+    }
+    .date .month,
+    .date .year{
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .date .day{
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .date .divider{ color: var(--gold); }
+
+    .place{
+      margin: 4px 0 8px;
+      font-size: 12px;
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+
+    .countdown-title{
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin: 6px 0 8px;
+    }
+
+    /* 2x2 MAIS COMPACTO */
+    .countdown{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 0 auto 10px;
+      max-width: 260px;
+    }
+
+    .cd-item{
+      border: 1px solid #e6e2dc;
+      border-radius: 14px;
+      background: #fff;
+      padding: 9px 6px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.04);
+    }
+
+    .cd-num{
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1.05;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .cd-lab{
+      margin-top: 5px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .btn{
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 13px 14px;
+      background: var(--green);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    /* celulares bem baixos */
+    @media (max-height: 700px){
+      .container{ padding: 12px 12px; }
+      .names{ font-size: 36px; }
+      .date .day{ font-size: 34px; }
+      .cd-num{ font-size: 22px; }
+      .cd-item{ padding: 8px 6px; }
+      .intro{ font-size: 10px; }
+      .btn{ padding: 12px; font-size: 14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <p class="intro">
+      É COM IMENSA ALEGRIA QUE<br>
+      CONVIDAMOS VOCÊS PARA CELEBRAR<br>
+      O NOSSO CASAMENTO
+    </p>
+
+    <div class="names">
+      <span class="top">Larissa</span>
+      <span class="and">e</span>
+      <span class="bottom">Gabriel</span>
+    </div>
+
+    <div class="date">
+      <span class="month">ABRIL</span>
+      <span class="divider">|</span>
+      <span class="day">25</span>
+      <span class="divider">|</span>
+      <span class="year">2026</span>
+    </div>
+
+    <div class="place">
+      ÀS 11H00<br>
+      CHÁCARA BARROCA
+    </div>
+
+    <div class="countdown-title">CONTAMOS COM A SUA CONFIRMAÇÃO ATÉ</div>
+
+    <div class="countdown">
+      <div class="cd-item">
+        <div class="cd-num" id="cd-d">00</div>
+        <div class="cd-lab">DIAS</div>
+      </div>
+      <div class="cd-item">
+        <div class="cd-num" id="cd-h">00</div>
+        <div class="cd-lab">HORAS</div>
+      </div>
+      <div class="cd-item">
+        <div class="cd-num" id="cd-m">00</div>
+        <div class="cd-lab">MIN</div>
+      </div>
+      <div class="cd-item">
+        <div class="cd-num" id="cd-s">00</div>
+        <div class="cd-lab">SEG</div>
+      </div>
+    </div>
+
+    <a href="presenca.html" class="btn">Confirmar presença</a>
+  </div>
+
+  <script>
+    // 01/03/2026 (mês 2 = março)
+    const target = new Date(2026, 2, 1, 0, 0, 0);
+
+    const elD = document.getElementById("cd-d");
+    const elH = document.getElementById("cd-h");
+    const elM = document.getElementById("cd-m");
+    const elS = document.getElementById("cd-s");
+
+    function pad(n){ return String(n).padStart(2, "0"); }
+
+    function tick(){
+      const now = new Date();
+      let diff = target - now;
+      if(diff < 0) diff = 0;
+
+      const total = Math.floor(diff / 1000);
+      const days = Math.floor(total / 86400);
+      const hours = Math.floor((total % 86400) / 3600);
+      const minutes = Math.floor((total % 3600) / 60);
+      const seconds = total % 60;
+
+      elD.textContent = pad(days);
+      elH.textContent = pad(hours);
+      elM.textContent = pad(minutes);
+      elS.textContent = pad(seconds);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
