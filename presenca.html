@@ -189,7 +189,7 @@
         <input type="text" id="nome" placeholder="Digite seu nome" required />
 
         <label class="top">TELEFONE / WHATSAPP</label>
-        <input type="text" id="numero" placeholder="(41) 9 9999-9999" inputmode="numeric" autocomplete="tel" required />
+        <input type="text" id="numero" placeholder="(41) 9 9999-9999" inputmode="tel" autocomplete="tel" required />
 
         <label class="top">VAI COMPARECER?</label>
         <div class="options">
@@ -205,7 +205,7 @@
         </div>
 
         <div class="buttons">
-          <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">
+          <button type="button" class="btn-secondary" onclick="history.back()">
             Voltar
           </button>
           <button type="submit" class="btn-primary" id="btnEnviar">
@@ -226,6 +226,8 @@
     const btn = document.getElementById("btnEnviar");
     const nomeEl = document.getElementById("nome");
     const numeroEl = document.getElementById("numero");
+
+    let nomeDuplicado = false;
 
     function onlyDigits(s){ return (s || "").toString().replace(/\D/g, ""); }
 
@@ -288,6 +290,14 @@
       });
     }
 
+    nomeEl.addEventListener("input", () => {
+      // quando a pessoa altera o nome, libera revalidação
+      nomeDuplicado = false;
+      if (!btn.disabled) return;
+      statusEl.textContent = "";
+      btn.disabled = false;
+    });
+
     nomeEl.addEventListener("blur", async () => {
       const nome = nomeEl.value.trim();
       if (!nome) return;
@@ -295,11 +305,19 @@
       try {
         const r = await jsonp({ action: "check", nome });
         if (r.ok && r.exists) {
+          nomeDuplicado = true;
           statusEl.innerHTML = "<span class='err'>Este nome já confirmou presença.</span>";
+          btn.disabled = true;
         } else {
+          nomeDuplicado = false;
           statusEl.textContent = "";
+          btn.disabled = false;
         }
-      } catch {}
+      } catch {
+        // se der erro de conexão na checagem, não trava o envio
+        nomeDuplicado = false;
+        btn.disabled = false;
+      }
     });
 
     form.addEventListener("submit", async (e) => {
@@ -309,6 +327,11 @@
       const numeroDigits = onlyDigits(numeroEl.value); // envia só números
       const presencaEl = document.querySelector("input[name='presenca']:checked");
       const presenca = presencaEl ? presencaEl.value : "";
+
+      if (nomeDuplicado) {
+        statusEl.innerHTML = "<span class='err'>Este nome já confirmou presença.</span>";
+        return;
+      }
 
       // valida: precisa de 10 ou 11 dígitos
       if (!nome || !presenca || !(numeroDigits.length === 10 || numeroDigits.length === 11)) {
@@ -326,6 +349,8 @@
         if (r.ok && r.status === "ok") {
           statusEl.innerHTML = "<span class='ok'>Confirmação registrada ✅</span>";
           form.reset();
+          nomeEl.focus();
+          setTimeout(() => { statusEl.textContent = ""; }, 3500);
         } else if (r.ok && r.status === "duplicado") {
           statusEl.innerHTML = "<span class='err'>Você já confirmou antes ✅</span>";
         } else {
@@ -334,7 +359,10 @@
       } catch {
         statusEl.innerHTML = "<span class='err'>Erro de conexão. Tente novamente.</span>";
       } finally {
-        btn.disabled = false;
+        // se estiver duplicado, mantém travado
+        if (!nomeDuplicado) {
+          btn.disabled = false;
+        }
         btn.textContent = "Enviar";
       }
     });
