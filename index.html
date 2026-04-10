@@ -33,33 +33,28 @@
       color: var(--text);
     }
 
-    /* garante que fique tudo na tela */
     .page{
-      min-height: 100svh; /* melhor no iPhone */
+      min-height: 100svh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 10px 12px; /* bem compacto */
+      padding: 16px 12px;
     }
 
     .container{
       width: 100%;
       max-width: 420px;
-
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 18px;
       box-shadow: var(--shadow);
-
-      padding: 18px 16px; /* reduzido */
+      padding: 24px 18px;
       text-align:center;
-
       display:flex;
       flex-direction:column;
-      gap: 10px; /* compacto */
+      gap: 14px;
     }
 
-    /* texto topo */
     .intro{
       text-transform: uppercase;
       letter-spacing: 1.6px;
@@ -68,7 +63,6 @@
       margin: 0;
     }
 
-    /* nomes */
     .names{
       display:flex;
       flex-direction:column;
@@ -78,11 +72,13 @@
       line-height: 1.05;
       margin: 0;
     }
+
     .names .top,
     .names .bottom{
       color: var(--names);
-      font-size: 44px; /* levemente menor pra caber */
+      font-size: 44px;
     }
+
     .names .and{
       color: var(--and);
       font-size: 20px;
@@ -91,7 +87,6 @@
       font-weight: 400;
     }
 
-    /* data no estilo canva */
     .date{
       display:flex;
       justify-content:center;
@@ -99,12 +94,14 @@
       gap: 10px;
       margin-top: 2px;
     }
+
     .date .month,
     .date .year{
       font-size: 12px;
       letter-spacing: 2px;
       color: var(--muted);
     }
+
     .date .day{
       font-family: 'Cormorant Garamond', serif;
       font-size: 46px;
@@ -112,59 +109,50 @@
       color: var(--gold);
       line-height: 1;
     }
+
     .date .divider{
       color: var(--gold);
     }
 
-    /* hora + local */
     .when{
       text-transform: uppercase;
       letter-spacing: 2px;
       font-size: 13px;
-      line-height: 1.35;
+      line-height: 1.5;
       margin: 0;
     }
 
-    /* título contador */
-    .countdown-title{
-      margin-top: 6px;
-      text-transform: uppercase;
-      letter-spacing: 2.2px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* contador */
-    .countdown{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr); /* 3 caixas */
-      gap: 10px;
-      margin-top: 4px;
-    }
-    .cd-item{
+    .message-box{
+      margin-top: 8px;
       border: 1px solid #e6e1da;
       border-radius: 16px;
-      padding: 12px 10px;
+      padding: 18px 16px;
       background: #fff;
     }
-    .cd-num{
-      font-size: 26px;
-      font-weight: 700;
-      color: #2b5a4f;
-      line-height: 1.1;
-    }
-    .cd-lab{
-      margin-top: 6px;
-      font-size: 12px;
-      letter-spacing: 2px;
-      color: var(--muted);
+
+    .message-title{
       text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
     }
 
-    /* botão */
+    .message-text{
+      font-size: 15px;
+      line-height: 1.7;
+      margin: 0;
+      color: var(--text);
+    }
+
+    .thanks{
+      color: var(--green);
+      font-weight: 700;
+    }
+
     .btn{
       display:block;
-      margin-top: 6px;
+      margin-top: 4px;
       padding: 14px 16px;
       background: var(--green);
       color:#fff;
@@ -174,14 +162,10 @@
       font-weight: 700;
     }
 
-    /* micro ajustes em telas muito pequenas */
     @media (max-height: 700px){
-      .container{ padding: 16px 14px; gap: 8px; }
+      .container{ padding: 20px 16px; gap: 12px; }
       .names .top, .names .bottom{ font-size: 40px; }
       .date .day{ font-size: 42px; }
-      .cd-item{ padding: 10px 8px; }
-      .cd-num{ font-size: 24px; }
-      .btn{ padding: 12px 14px; }
     }
   </style>
 </head>
@@ -192,8 +176,7 @@
 
       <p class="intro">
         É COM IMENSA ALEGRIA QUE<br>
-        CONVIDAMOS VOCÊS PARA CELEBRAR<br>
-        O NOSSO CASAMENTO
+        CELEBRAMOS ESTE MOMENTO TÃO ESPECIAL
       </p>
 
       <h1 class="names">
@@ -215,59 +198,17 @@
         CHÁCARA BARROCA
       </p>
 
-      <div class="countdown-title">CONTAMOS COM A SUA CONFIRMAÇÃO ATÉ</div>
-
-      <div class="countdown" id="countdown">
-        <div class="cd-item">
-          <div class="cd-num" id="cd-d">00</div>
-          <div class="cd-lab">DIAS</div>
-        </div>
-        <div class="cd-item">
-          <div class="cd-num" id="cd-h">00</div>
-          <div class="cd-lab">HORAS</div>
-        </div>
-        <div class="cd-item">
-          <div class="cd-num" id="cd-m">00</div>
-          <div class="cd-lab">MIN</div>
-        </div>
+      <div class="message-box">
+        <div class="message-title">CONFIRMAÇÕES ENCERRADAS</div>
+        <p class="message-text">
+          Agradecemos com carinho a todos que já confirmaram sua presença.<br><br>
+          <span class="thanks">Estamos muito felizes em celebrar esse momento com vocês.</span>
+        </p>
       </div>
 
-      <a href="presenca.html" class="btn">Confirmar presença</a>
+      <a href="presenca.html" class="btn">Ver mensagem</a>
 
     </div>
   </div>
-
-  <script>
-  // Contador até 15/03/2026 23:59:59
-  // mês 2 = março
-  const target = new Date(2026, 3, 5, 23, 59, 59);
-
-  const elD = document.getElementById("cd-d");
-  const elH = document.getElementById("cd-h");
-  const elM = document.getElementById("cd-m");
-
-  function pad(n){
-    return String(n).padStart(2,"0");
-  }
-
-  function tick(){
-    const now = new Date();
-    let diff = target.getTime() - now.getTime();
-
-    if(diff < 0) diff = 0;
-
-    const total = Math.floor(diff / 1000);
-    const days = Math.floor(total / 86400);
-    const hours = Math.floor((total % 86400) / 3600);
-    const minutes = Math.floor((total % 3600) / 60);
-
-    elD.textContent = pad(days);
-    elH.textContent = pad(hours);
-    elM.textContent = pad(minutes);
-  }
-
-  tick();
-  setInterval(tick, 30000);
-</script>
 </body>
 </html>

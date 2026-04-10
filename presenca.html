@@ -46,9 +46,10 @@
       max-width: 520px;
       background:var(--card);
       border-radius:18px;
-      padding: 28px 22px;
+      padding: 32px 22px;
       box-shadow: var(--shadow);
       overflow: hidden;
+      text-align: center;
     }
 
     h1{
@@ -56,7 +57,7 @@
       text-align:center;
       font-size:28px;
       color:var(--green);
-      margin:0 0 6px;
+      margin:0 0 8px;
     }
 
     .subtitle{
@@ -65,65 +66,24 @@
       letter-spacing:1.4px;
       text-transform:uppercase;
       color:var(--muted);
-      margin:0 0 18px;
+      margin:0 0 22px;
     }
 
-    label.top{
-      display:block;
-      font-size:11px;
-      letter-spacing:1px;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin:16px 0 6px;
-    }
-
-    input[type="text"]{
-      width:100%;
-      padding:14px 14px;
-      border-radius:12px;
+    .box{
       border:1px solid var(--line);
-      font-size:14px;
-      outline:none;
+      border-radius:16px;
+      padding:22px 18px;
       background:#fff;
     }
 
-    input[type="text"]:focus{
-      border-color: var(--green);
+    .message{
+      font-size:15px;
+      line-height:1.8;
+      margin:0;
     }
 
-    .options{
-      display:flex;
-      gap:12px;
-      margin-top:8px;
-      width: 100%;
-    }
-
-    .choice{
-      flex:1;
-      min-width: 0;
-    }
-
-    .choice input{ display:none; }
-
-    .choice span{
-      display:block;
-      width:100%;
-      text-align:center;
-      padding:12px 12px;
-      border-radius:30px;
-      border:1px solid var(--line);
-      background:#fff;
-      cursor:pointer;
-      user-select:none;
-      font-size:14px;
-      transition:.15s;
-      white-space: nowrap;
-    }
-
-    .choice input:checked + span{
-      border-color: var(--green);
-      background:#eef4f2;
-      color: var(--green);
+    .highlight{
+      color:var(--green);
       font-weight:600;
     }
 
@@ -134,46 +94,32 @@
       width: 100%;
     }
 
-    button{
+    .btn{
       flex:1;
-      min-width: 0;
+      min-width:0;
       padding:14px;
       border-radius:30px;
       font-size:14px;
       cursor:pointer;
       border:none;
+      text-decoration:none;
+      text-align:center;
+      font-weight:600;
     }
 
     .btn-secondary{
       background:#fff;
       border:1px solid var(--line);
-      font-weight:600;
       color:var(--text);
     }
 
     .btn-primary{
       background:var(--green);
       color:#fff;
-      font-weight:600;
     }
-
-    .btn-primary:disabled{
-      opacity:.7;
-      cursor:not-allowed;
-    }
-
-    #status{
-      margin-top:14px;
-      text-align:center;
-      min-height:18px;
-      font-size:14px;
-    }
-
-    .ok{ color: var(--green); font-weight:600; }
-    .err{ color: #c0392b; font-weight:600; }
 
     @media (max-width: 360px){
-      .options, .buttons { flex-direction: column; }
+      .buttons { flex-direction: column; }
     }
   </style>
 </head>
@@ -182,190 +128,20 @@
   <div class="wrap">
     <div class="card">
       <h1>Confirmação de Presença</h1>
-      <div class="subtitle">CONFIRME INDIVIDUALMENTE</div>
+      <div class="subtitle">CONFIRMAÇÕES ENCERRADAS</div>
 
-      <form id="formPresenca">
-        <label class="top">NOME COMPLETO</label>
-        <input type="text" id="nome" placeholder="Digite seu nome" required />
+      <div class="box">
+        <p class="message">
+          Agradecemos de coração a todos que já confirmaram sua presença.<br><br>
+          <span class="highlight">Estamos muito felizes por compartilhar esse momento tão especial com vocês.</span>
+        </p>
+      </div>
 
-        <label class="top">TELEFONE / WHATSAPP</label>
-        <input type="text" id="numero" placeholder="(41) 9 9999-9999" inputmode="tel" autocomplete="tel" required />
-
-        <label class="top">VAI COMPARECER?</label>
-        <div class="options">
-          <label class="choice">
-            <input type="radio" name="presenca" value="Sim" required>
-            <span>Sim</span>
-          </label>
-
-          <label class="choice">
-            <input type="radio" name="presenca" value="Não">
-            <span>Não</span>
-          </label>
-        </div>
-
-        <div class="buttons">
-          <button type="button" class="btn-secondary" onclick="history.back()">
-            Voltar
-          </button>
-          <button type="submit" class="btn-primary" id="btnEnviar">
-            Enviar
-          </button>
-        </div>
-
-        <div id="status"></div>
-      </form>
+      <div class="buttons">
+        <a href="index.html" class="btn btn-secondary">Voltar</a>
+        <a href="index.html" class="btn btn-primary">Início</a>
+      </div>
     </div>
   </div>
-
-  <script>
-    const ENDPOINT = "https://script.google.com/macros/s/AKfycbzqxu1a-bHA6l5HKouGWYIGZwGIOR7GvMDs6qWaQEHuAfGOV-aXbkV2VDY-R8Xneboefg/exec";
-
-    const form = document.getElementById("formPresenca");
-    const statusEl = document.getElementById("status");
-    const btn = document.getElementById("btnEnviar");
-    const nomeEl = document.getElementById("nome");
-    const numeroEl = document.getElementById("numero");
-
-    let nomeDuplicado = false;
-
-    function onlyDigits(s){ return (s || "").toString().replace(/\D/g, ""); }
-
-    // Formata para: (41) 9 9999-9999
-    // Aceita também 10 dígitos (sem o 9): (41) 9999-9999
-    function formatBRPhone(raw){
-      const d = onlyDigits(raw).slice(0, 11); // limita 11 dígitos
-      if (d.length === 0) return "";
-
-      const ddd = d.slice(0, 2);
-      const rest = d.slice(2);
-
-      // 11 dígitos: 9 + 8
-      if (d.length >= 11){
-        const n1 = rest.slice(0, 1);
-        const p1 = rest.slice(1, 5);
-        const p2 = rest.slice(5, 9);
-        return `(${ddd}) ${n1} ${p1}-${p2}`;
-      }
-
-      // 10 dígitos: 8
-      if (d.length >= 10){
-        const p1 = rest.slice(0, 4);
-        const p2 = rest.slice(4, 8);
-        return `(${ddd}) ${p1}-${p2}`;
-      }
-
-      // parcial (digitando)
-      if (d.length <= 2) return `(${ddd}`;
-      return `(${ddd}) ${rest}`;
-    }
-
-    // aplica máscara ao digitar/colar
-    numeroEl.addEventListener("input", () => {
-      const raw = numeroEl.value;
-      numeroEl.value = formatBRPhone(raw);
-    });
-
-    function jsonp(params) {
-      return new Promise((resolve, reject) => {
-        const cb = "cb_" + Math.random().toString(36).slice(2);
-        const qs = new URLSearchParams({ ...params, callback: cb });
-
-        const s = document.createElement("script");
-        s.src = ENDPOINT + "?" + qs.toString();
-
-        window[cb] = (data) => {
-          delete window[cb];
-          s.remove();
-          resolve(data);
-        };
-
-        s.onerror = () => {
-          delete window[cb];
-          s.remove();
-          reject(new Error("jsonp_error"));
-        };
-
-        document.body.appendChild(s);
-      });
-    }
-
-    nomeEl.addEventListener("input", () => {
-      // quando a pessoa altera o nome, libera revalidação
-      nomeDuplicado = false;
-      if (!btn.disabled) return;
-      statusEl.textContent = "";
-      btn.disabled = false;
-    });
-
-    nomeEl.addEventListener("blur", async () => {
-      const nome = nomeEl.value.trim();
-      if (!nome) return;
-
-      try {
-        const r = await jsonp({ action: "check", nome });
-        if (r.ok && r.exists) {
-          nomeDuplicado = true;
-          statusEl.innerHTML = "<span class='err'>Este nome já confirmou presença.</span>";
-          btn.disabled = true;
-        } else {
-          nomeDuplicado = false;
-          statusEl.textContent = "";
-          btn.disabled = false;
-        }
-      } catch {
-        // se der erro de conexão na checagem, não trava o envio
-        nomeDuplicado = false;
-        btn.disabled = false;
-      }
-    });
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const nome = nomeEl.value.trim();
-      const numeroDigits = onlyDigits(numeroEl.value); // envia só números
-      const presencaEl = document.querySelector("input[name='presenca']:checked");
-      const presenca = presencaEl ? presencaEl.value : "";
-
-      if (nomeDuplicado) {
-        statusEl.innerHTML = "<span class='err'>Este nome já confirmou presença.</span>";
-        return;
-      }
-
-      // valida: precisa de 10 ou 11 dígitos
-      if (!nome || !presenca || !(numeroDigits.length === 10 || numeroDigits.length === 11)) {
-        statusEl.innerHTML = "<span class='err'>Preencha todos os campos (telefone válido).</span>";
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = "Enviando...";
-      statusEl.textContent = "";
-
-      try {
-        const r = await jsonp({ action: "submit", nome, presenca, numero: numeroDigits });
-
-        if (r.ok && r.status === "ok") {
-          statusEl.innerHTML = "<span class='ok'>Confirmação registrada ✅</span>";
-          form.reset();
-          nomeEl.focus();
-          setTimeout(() => { statusEl.textContent = ""; }, 3500);
-        } else if (r.ok && r.status === "duplicado") {
-          statusEl.innerHTML = "<span class='err'>Você já confirmou antes ✅</span>";
-        } else {
-          statusEl.innerHTML = "<span class='err'>Erro ao enviar. Tente novamente.</span>";
-        }
-      } catch {
-        statusEl.innerHTML = "<span class='err'>Erro de conexão. Tente novamente.</span>";
-      } finally {
-        // se estiver duplicado, mantém travado
-        if (!nomeDuplicado) {
-          btn.disabled = false;
-        }
-        btn.textContent = "Enviar";
-      }
-    });
-  </script>
 </body>
 </html>
